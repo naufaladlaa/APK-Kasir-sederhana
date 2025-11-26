@@ -3,49 +3,85 @@ from data import barang
 keranjang = []
 
 def daftar():
-    print("===== DAFTAR NAMA BARANG =====")
-    for nama, harga in barang.items():
-        print(f" - {nama:<12} = {harga}")
-
-def tambah(nama, qty =1):
-    if nama in barang:
+    print("============ DAFTAR MENU ============")
+    print("KODE       NAMA            HARGA")
+    print("=====================================")
+    for kode, item in barang.items():
+        print(f"{kode:<10} {item['nama']:<15} {item['harga']}")
+    print("=====================================")
+    
+def menu_utama():
+    while True:
+        print("======== APK KASIR SEDERHANA ========")
+        print("1. START")
+        print("2. EXIT")
+        
+        pilihan = input("Masukan Perintah : ")
+        
+        if pilihan == "1":
+            print("\nMemulai Program......\n")
+            break
+        elif pilihan == "2":
+            print("\nTerima Kasih :D")
+            exit()
+        else:
+            print("Pilihan tidak valid !!")
+            
+def tambah(kode, qty=1):
+    if kode not in barang:
+        daftar()
+        print("Kode tidak ada !!")
+    
+    if kode in barang:
         keranjang.append({
-            "nama": nama,
-            "harga": barang[nama],
-            "jumlah barang": qty
+            "kode":kode,
+            "nama":barang[kode]['nama'],
+            "harga":barang[kode]['harga'],
+            "qty":qty
         })
         return True
-    return False
-
-def inputB():
-    while True:
-        nama = input("Masukan nama barang : ")
-        
-        if nama in barang:
-            return nama
-        else:
-            print("Barang tidak ada atau salah ketik !!")
-            daftar()
-            print()
-            
+    
 def cek():
     if not keranjang:
-        print("Keranjang anda masih kosong !!")
-    else :
-        print("===== ISI KERANJANG =====")
-        for i, item in enumerate(keranjang, start=1):
-            nama = item["nama"]
-            harga = item["harga"]
-            qty = item["jumlah barang"]
-            sub = harga * qty
-            
-            print(f"{i}. {nama:<10}X {qty} = {sub} ")
-            
-def edit(nama, qtyb):        
+        print("Keranjang Anda masih kosong !!")
+        return
+    print("============ ISI KERANJANG ============")
+    for i,item in enumerate(keranjang, start=1):
+        sub = item["harga"] * item["qty"]
+        print(f"{i}. {item['nama']:<10} X {item['qty']} = {sub}")
+    print()
+    
+def cekout():
+    if not keranjang:
+        print("Keranjang Anda masih kosong")
+        return
+    
+    print("============ STRUK BELANJA ============")
+    total = 0
+    
+    for item in keranjang:
+        qty = item["qty"]
+        
+        sub = item["harga"] * qty        
+        total += sub
+        print(f"{item['nama']} X {qty} = {sub}")
+    
+    totalB = 0
+    if sub > 75000:
+        dis = (15 / 100) * sub
+        totalB = sub - dis
+    
+    print("=====================================")  
+    print("DISKON : Rp"+int(dis))
+    print("TOTAL BELANJA : Rp"+int(sub))
+    print("TOTAL BAYAR : Rp"+int(totalB))
+    print("=====================================")
+    
+def edit(nama, qtyb):
     for item in keranjang:
         if item["nama"] == nama:
             if qtyb > 0:
-                item["jumlah barang"] = qtyb
+                item["qty"] = qtyb
                 return True
             elif qtyb == 0:
                 keranjang.remove(item)
@@ -54,94 +90,39 @@ def edit(nama, qtyb):
                 return False
         print("Barang tidak ditemukan !!")
         return False
-
-def hapus(nama):
-    for item in keranjang:
-        if item["nama"] == nama:
-            keranjang.remove(item)
-            print(f"{nama} berhasil dihapus")
-            return True
     
-    print("Nama barang tidak ditemukan !!")
-    return False
-
-def cekout():
-    if not keranjang:
-        print("Keranjang anda masih kosong !!")
-        return
+menu_utama()
     
-    print("===== STRUK BELANJA =====")
-    sub = 0
-    for i, item in enumerate(keranjang, start=1):
-        nama = item["nama"]
-        harga = item["harga"]
-        qty = item["jumlah barang"]
-        total = harga * qty
-        sub += total
-        
-        print(f"{i}. {nama:<10} {harga} X {qty} = {total}")
-        
-    totalb = 0
-    if sub > 50000:
-        dis = (10 / 100) * sub
-        totalb = sub - dis
-        
-    print("==========================================")
-    print("DISKON : Rp",+int(dis))
-    print(f"TOTAL BELANJA : Rp.{sub}")
-    print("TOTAL BAYAR : Rp.",+int(totalb))
-    print("==========================================")
-    keranjang.clear()
-    
-def menu():
-    while True:
-        print("==================================")
-        print("========= APK KASIR v.10 =========")
-        print("==================================")
-        
-        print("1. START")
-        print("2. EXIT")
-        
-        pilihan = input("Pilih perintah : ")
-        
-        if pilihan == "1":
-            print("\nMemulai Program....\n")
-            break
-        elif pilihan == "2":
-            print("\nTerima kasih\n")
-            exit()
-        else:
-            print("\nPilihan tidak valid !! \n")
-menu()
-
 while True:
-    print("===================================")
-    print("========= ANAK BUAH KAPAL =========")
-    print("===================================")
-    print("1. TAMBAH BARANG")
-    print("2. EDIT KERANJANG")
-    print("3. CHECKOUT")
-    print("4. KELUAR")
+    print("============ ANAK BUAH KAPAL ============")
+    print("=========================================")
+    print("1. DAFTAR BARANG")
+    print("2. TAMBAH BARANG")
+    print("3. CEK KERANJANG")
+    print("4. EDIT KERANJANG")
+    print("5. CHECKOUT")
+    print("6. EXIT")
     
-    pilihan = input("Pilih menu : ")
+    pilihan = input("Masukan Perintah : ")
     
     if pilihan == "1":
         daftar()
-        nama = inputB()
-        qty = int(input("Masukan jumlah barang : "))
-        tambah(nama, qty)
     elif pilihan == "2":
-        cek()
-        nama = input("Masukan nama barang : ")
+        daftar()
+        kode = input("Masukan Kode : ")
         qty = int(input("Masukan jumlah barang : "))
-        print(f"{nama} telah di edit")
-        edit(nama, qty)
+        tambah(kode, qty)
     elif pilihan == "3":
+        cek()
+    elif pilihan  == "4":
+        cek()
+        nama = input("nama barang : ").strip().upper()
+        qtyb = int(input("Masukan Jumlah barang : "))
+        edit(nama, qtyb)
+    elif pilihan == "5":
         cekout()
-    elif pilihan == "4":
-        print("Terima kasih telah menggunakan program !! :D")
+    elif pilihan == "6":
+        print("TERIMA KASIH TELAH MENGGUNAKAN PROGRAM !!")
         break
-    else : 
-        print("Pilihan tidak valid !! ")
-
-    input("\ntekan ENTER untuk kembali ke menu utama ....")
+    
+    input("\nTekan ENTER untuk kembali ke menu utama......")
