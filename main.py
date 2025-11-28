@@ -9,23 +9,6 @@ def daftar():
     for kode, item in barang.items():
         print(f"{kode:<10} {item['nama']:<15} {item['harga']}")
     print("=====================================")
-    
-def menu_utama():
-    while True:
-        print("======== APK KASIR SEDERHANA ========")
-        print("1. START")
-        print("2. EXIT")
-        
-        pilihan = input("Masukan Perintah : ")
-        
-        if pilihan == "1":
-            print("\nMemulai Program......\n")
-            break
-        elif pilihan == "2":
-            print("\nTerima Kasih :D")
-            exit()
-        else:
-            print("Pilihan tidak valid !!")
             
 def tambah(kode, qty=1):
     if kode not in barang:
@@ -72,10 +55,12 @@ def cekout():
         totalB = sub - dis
     
     print("=====================================")  
-    print("DISKON : Rp"+int(dis))
-    print("TOTAL BELANJA : Rp"+int(sub))
-    print("TOTAL BAYAR : Rp"+int(totalB))
+    print("DISKON : Rp",+int(dis))
+    print("TOTAL BELANJA : Rp",+int(sub))
+    print("TOTAL BAYAR : Rp",+int(totalB))
     print("=====================================")
+    
+    keranjang.clear()
     
 def edit(nama, qtyb):
     for item in keranjang:
@@ -90,39 +75,3 @@ def edit(nama, qtyb):
                 return False
         print("Barang tidak ditemukan !!")
         return False
-    
-menu_utama()
-    
-while True:
-    print("============ ANAK BUAH KAPAL ============")
-    print("=========================================")
-    print("1. DAFTAR BARANG")
-    print("2. TAMBAH BARANG")
-    print("3. CEK KERANJANG")
-    print("4. EDIT KERANJANG")
-    print("5. CHECKOUT")
-    print("6. EXIT")
-    
-    pilihan = input("Masukan Perintah : ")
-    
-    if pilihan == "1":
-        daftar()
-    elif pilihan == "2":
-        daftar()
-        kode = input("Masukan Kode : ")
-        qty = int(input("Masukan jumlah barang : "))
-        tambah(kode, qty)
-    elif pilihan == "3":
-        cek()
-    elif pilihan  == "4":
-        cek()
-        nama = input("nama barang : ").strip().upper()
-        qtyb = int(input("Masukan Jumlah barang : "))
-        edit(nama, qtyb)
-    elif pilihan == "5":
-        cekout()
-    elif pilihan == "6":
-        print("TERIMA KASIH TELAH MENGGUNAKAN PROGRAM !!")
-        break
-    
-    input("\nTekan ENTER untuk kembali ke menu utama......")
